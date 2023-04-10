@@ -20,4 +20,5 @@ Finjinon is a custom AVFoundation based camera UI, focused on quickly adding sev
   s.requires_arc      = true
   s.source_files      = "Sources/**/*.swift"
   s.frameworks        = "Foundation"
+  s.dependency 'YPImagePicker'
 end
