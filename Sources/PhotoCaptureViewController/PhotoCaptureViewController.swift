@@ -55,6 +55,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     fileprivate var closeButton = UIButton()
     fileprivate let buttonMargin: CGFloat = 12
     fileprivate var orientation: UIDeviceOrientation = .portrait
+    fileprivate var titleLabel = UILabel()
 
     private lazy var lowLightView: LowLightView = {
         let view = LowLightView()
@@ -75,7 +76,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = UIColor(red: 0.165, green: 0.251, blue: 0.329, alpha: 1.0)
 
         NotificationCenter.default.addObserver(
             self,
@@ -140,6 +141,13 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         flashButton.tintColor = UIColor.white
         flashButton.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         roundifyButton(flashButton, inset: 14)
+        
+        titleLabel.font = UIFont.systemFont(ofSize: 22.0)
+        titleLabel.textColor = .white
+        titleLabel.textAlignment = .center
+        titleLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64)
+        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
+        self.view.addSubview(titleLabel)
 
         let tapper = UITapGestureRecognizer(target: self, action: #selector(focusTapGestureRecognized(_:)))
         previewView.addGestureRecognizer(tapper)
@@ -156,7 +164,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             collectionViewHeight = containerHeight - cameraButtonHeight
         }
         containerView.frame = containerFrame
-        containerView.backgroundColor = UIColor(white: 0, alpha: 0.4)
+        containerView.backgroundColor = UIColor(red: 0.165, green: 0.251, blue: 0.329, alpha: 0.4)
         view.addSubview(containerView)
         collectionView.frame = CGRect(x: 0, y: 0, width: containerView.bounds.width, height: collectionViewHeight)
         let layout = PhotoCollectionViewLayout()
@@ -189,7 +197,9 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         captureButton.isEnabled = false
         captureButton.accessibilityLabel = "finjinon.captureButton".localized()
 
-        closeButton.frame = CGRect(x: captureButton.frame.maxX, y: captureButton.frame.midY - 22, width: viewBounds.width - captureButton.frame.maxX, height: 44)
+        closeButton.titleLabel?.numberOfLines = 2
+        closeButton.titleLabel?.textAlignment = .center
+        closeButton.frame = CGRect(x: captureButton.frame.maxX, y: captureButton.frame.midY - 44, width: viewBounds.width - captureButton.frame.maxX, height: 84)
         closeButton.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
         closeButton.setTitle("finjinon.done".localized(), for: .normal)
         closeButton.tintColor = UIColor.white
@@ -282,11 +292,14 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     }
 
     open func reloadPreviewItemsAtIndexes(_ indexes: [Int]) {
+        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
         let indexPaths = indexes.map { IndexPath(item: $0, section: 0) }
         collectionView.reloadItems(at: indexPaths)
     }
 
     open func reloadPreviews() {
+        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
+
         collectionView.reloadData()
     }
 
@@ -333,10 +346,11 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             collectionView.performBatchUpdates({
                 handler()
                 self.collectionView.deleteItems(at: [indexPath])
-            }, completion: { _ in
+            }, completion: { [self] _ in
                 if asset.imageURL == nil {
                     self.storage.deleteAsset(asset, completion: {})
                 }
+                titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
             })
         }
     }
@@ -460,8 +474,10 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
                     insertedIndexPath = IndexPath(item: 0, section: 0)
                 }
                 self.collectionView.insertItems(at: [insertedIndexPath])
-            }, completion: { _ in
+                
+            }, completion: { [self] _ in
                 self.scrollToLastAddedAssetAnimated(true)
+                titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
             })
         }
     }

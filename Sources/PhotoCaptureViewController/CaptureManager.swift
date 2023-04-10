@@ -235,7 +235,7 @@ private extension CaptureManager {
         captureQueue.async { [weak self] in
             guard let self = self else { return }
 
-            self.cameraDevice = self.cameraDeviceWithPosition(.back)
+            self.cameraDevice = self.cameraDeviceWithPosition(.front)
             var error: NSError?
 
             do {

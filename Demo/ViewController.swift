@@ -17,12 +17,12 @@ class ViewController: UITableViewController {
 
         captureController.delegate = self
 
-        for i in 0 ..< 6 {
-            captureController.createAssetFromImage(UIImage(named: "hoff.jpeg")!) { asset in
-                self.assets.append(asset)
-                self.tableView.insertRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
-            }
-        }
+//        for i in 0 ..< 6 {
+//            captureController.createAssetFromImage(UIImage(named: "hoff.jpeg")!) { asset in
+//                self.assets.append(asset)
+//                self.tableView.insertRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
+//            }
+//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

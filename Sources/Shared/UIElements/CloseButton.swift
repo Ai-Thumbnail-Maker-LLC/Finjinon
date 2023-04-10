@@ -5,7 +5,7 @@
 import UIKit
 
 class CloseButton: UIButton {
-    var strokeColor = UIColor.black {
+    var strokeColor = UIColor(red: 0.165, green: 0.251, blue: 0.329, alpha: 1.0) {
         didSet { setNeedsDisplay() }
     }
 

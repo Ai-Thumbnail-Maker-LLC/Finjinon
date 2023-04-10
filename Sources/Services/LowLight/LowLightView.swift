@@ -44,7 +44,7 @@ final class LowLightView: UIView {
     // MARK: - Setup
 
     private func setup() {
-        backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        backgroundColor = UIColor(red: 0.165, green: 0.251, blue: 0.329, alpha: 1.0).withAlphaComponent(0.8)
         layer.cornerRadius = 8
 
         addSubview(iconImageView)
