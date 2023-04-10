@@ -146,7 +146,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
         titleLabel.frame = CGRect(x: 0, y: self.view.layoutMargins.top, width: self.view.frame.size.width, height: 64)
-        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
+        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
         self.view.addSubview(titleLabel)
 
         let tapper = UITapGestureRecognizer(target: self, action: #selector(focusTapGestureRecognized(_:)))
@@ -197,12 +197,14 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         captureButton.isEnabled = false
         captureButton.accessibilityLabel = "finjinon.captureButton".localized()
 
+        closeButton.isHidden = true
         closeButton.titleLabel?.numberOfLines = 2
         closeButton.titleLabel?.textAlignment = .center
         closeButton.frame = CGRect(x: captureButton.frame.maxX, y: captureButton.frame.midY - 44, width: viewBounds.width - captureButton.frame.maxX, height: 84)
         closeButton.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
         closeButton.setTitle("finjinon.done".localized(), for: .normal)
         closeButton.tintColor = UIColor.white
+        closeButton.isEnabled = false
         closeButton.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         containerView.addSubview(closeButton)
 
@@ -296,14 +298,23 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     }
 
     open func reloadPreviewItemsAtIndexes(_ indexes: [Int]) {
-        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
+        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
+        if self.collectionView.numberOfItems(inSection: 0) == 12 {
+            closeButton.isEnabled = true
+        } else {
+            closeButton.isEnabled = false
+        }
         let indexPaths = indexes.map { IndexPath(item: $0, section: 0) }
         collectionView.reloadItems(at: indexPaths)
     }
 
     open func reloadPreviews() {
-        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
-
+        titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
+        if self.collectionView.numberOfItems(inSection: 0) == 12 {
+            closeButton.isEnabled = true
+        } else {
+            closeButton.isEnabled = false
+        }
         collectionView.reloadData()
     }
 
@@ -354,7 +365,12 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
                 if asset.imageURL == nil {
                     self.storage.deleteAsset(asset, completion: {})
                 }
-                titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
+                titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
+                if self.collectionView.numberOfItems(inSection: 0) == 12 {
+                    closeButton.isEnabled = true
+                } else {
+                    closeButton.isEnabled = false
+                }
             })
         }
     }
@@ -481,7 +497,12 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
                 
             }, completion: { [self] _ in
                 self.scrollToLastAddedAssetAnimated(true)
-                titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
+                titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
+                if self.collectionView.numberOfItems(inSection: 0) == 12 {
+                    closeButton.isEnabled = true
+                } else {
+                    closeButton.isEnabled = false
+                }
             })
         }
     }
