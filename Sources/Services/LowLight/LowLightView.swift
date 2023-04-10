@@ -5,7 +5,7 @@
 import UIKit
 
 final class LowLightView: UIView {
-    private lazy var iconImageView: UIImageView = {
+    lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(

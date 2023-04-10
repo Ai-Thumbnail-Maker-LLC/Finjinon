@@ -609,8 +609,10 @@ extension PhotoCaptureViewController: CaptureManagerDelegate {
         if lightingCondition == .low {
             lowLightView.text = "finjinon.lowLightMessage".localized()
             lowLightView.isHidden = false
+            lowLightView.iconImageView.isHidden = false
         } else {
-            lowLightView.text = nil
+            lowLightView.text = "finjinon.normalMessage".localized()
+            lowLightView.iconImageView.isHidden = true
             lowLightView.isHidden = true
         }
     }
