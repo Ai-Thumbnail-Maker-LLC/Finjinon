@@ -145,7 +145,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         titleLabel.font = UIFont.systemFont(ofSize: 22.0)
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
-        titleLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64)
+        titleLabel.frame = CGRect(x: 0, y: self.view.layoutMargins.top, width: self.view.frame.size.width, height: 64)
         titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/20)"
         self.view.addSubview(titleLabel)
 
