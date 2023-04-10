@@ -206,6 +206,10 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         closeButton.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         containerView.addSubview(closeButton)
 
+        lowLightView.text = "finjinon.normalMessage".localized()
+        lowLightView.iconImageView.isHidden = true
+        lowLightView.isHidden = false
+        lowLightView.textLabel.textAlignment = .center
         view.addSubview(lowLightView)
         NSLayoutConstraint.activate([
             lowLightView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -16),
@@ -610,10 +614,12 @@ extension PhotoCaptureViewController: CaptureManagerDelegate {
             lowLightView.text = "finjinon.lowLightMessage".localized()
             lowLightView.isHidden = false
             lowLightView.iconImageView.isHidden = false
+            lowLightView.textLabel.textAlignment = .left
         } else {
             lowLightView.text = "finjinon.normalMessage".localized()
             lowLightView.iconImageView.isHidden = true
-            lowLightView.isHidden = true
+            lowLightView.isHidden = false
+            lowLightView.textLabel.textAlignment = .center
         }
     }
     

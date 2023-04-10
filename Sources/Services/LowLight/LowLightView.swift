@@ -16,7 +16,7 @@ final class LowLightView: UIView {
         return imageView
     }()
 
-    private lazy var textLabel: UILabel = {
+    lazy var textLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
