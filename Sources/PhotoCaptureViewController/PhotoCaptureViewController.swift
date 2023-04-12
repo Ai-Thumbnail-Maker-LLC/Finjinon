@@ -204,7 +204,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         closeButton.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
         closeButton.setTitle("finjinon.done".localized(), for: .normal)
         closeButton.tintColor = UIColor.white
-        closeButton.isEnabled = false
+        closeButton.isEnabled = true
         closeButton.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         containerView.addSubview(closeButton)
 
