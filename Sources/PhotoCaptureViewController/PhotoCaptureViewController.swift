@@ -56,6 +56,9 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     fileprivate let buttonMargin: CGFloat = 12
     fileprivate var orientation: UIDeviceOrientation = .portrait
     fileprivate var titleLabel = UILabel()
+    var timer : Timer?
+    
+    var isSelectPhotos = true
 
     private lazy var lowLightView: LowLightView = {
         let view = LowLightView()
@@ -105,6 +108,13 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
 
         collectionView.reloadData()
         scrollToLastAddedAssetAnimated(false)
+        self.timer = Timer.scheduledTimer(timeInterval: 7.0, target: self, selector: #selector(updateText), userInfo: nil, repeats: true)
+        self.updateText()
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.timer?.invalidate()
     }
 
     func setupSubviews() {
@@ -208,7 +218,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         closeButton.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         containerView.addSubview(closeButton)
 
-        lowLightView.text = "finjinon.normalMessage".localized()
+        lowLightView.text = "finjinon.twelveMessage".localized()
         lowLightView.iconImageView.isHidden = true
         lowLightView.isHidden = false
         lowLightView.textLabel.textAlignment = .center
@@ -637,15 +647,36 @@ extension PhotoCaptureViewController: CaptureManagerDelegate {
             lowLightView.iconImageView.isHidden = false
             lowLightView.textLabel.textAlignment = .left
         } else {
-            lowLightView.text = "finjinon.normalMessage".localized()
-            lowLightView.iconImageView.isHidden = true
-            lowLightView.isHidden = false
-            lowLightView.textLabel.textAlignment = .center
+            //self.updateText()
         }
     }
     
     func captureManager(_ manager: CaptureManager, didFailWithError error: NSError) {
         print("Failure: \(error)")
+    }
+    
+    @objc func updateText() {
+        
+        if self.isSelectPhotos == true {
+            self.isSelectPhotos = false
+            lowLightView.fadeTransition(0.5)
+            lowLightView.text = "finjinon.normalMessage".localized()
+            lowLightView.iconImageView.isHidden = true
+            lowLightView.isHidden = false
+            lowLightView.textLabel.textAlignment = .center
+        
+    } else {
+            
+            
+            self.isSelectPhotos = true
+            lowLightView.fadeTransition(0.5)
+            lowLightView.text = "finjinon.twelveMessage".localized()
+            lowLightView.iconImageView.isHidden = true
+            lowLightView.isHidden = false
+            lowLightView.textLabel.textAlignment = .center
+            
+        }
+        
     }
 }
 
@@ -668,4 +699,15 @@ extension UIView {
             return
         }
     }
+}
+
+extension UIView {
+func fadeTransition(_ duration:CFTimeInterval) {
+let animation = CATransition()
+animation.timingFunction = CAMediaTimingFunction(name:
+CAMediaTimingFunctionName.easeInEaseOut)
+animation.type = CATransitionType.fade
+animation.duration = duration
+layer.add(animation, forKey: CATransitionType.fade.rawValue)
+}
 }
