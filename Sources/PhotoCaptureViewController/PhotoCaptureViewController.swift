@@ -197,7 +197,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         captureButton.isEnabled = false
         captureButton.accessibilityLabel = "finjinon.captureButton".localized()
 
-        closeButton.isHidden = true
+        //closeButton.isHidden = true
         closeButton.titleLabel?.numberOfLines = 2
         closeButton.titleLabel?.textAlignment = .center
         closeButton.frame = CGRect(x: captureButton.frame.maxX, y: captureButton.frame.midY - 44, width: viewBounds.width - captureButton.frame.maxX, height: 84)
@@ -299,10 +299,10 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
 
     open func reloadPreviewItemsAtIndexes(_ indexes: [Int]) {
         titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-        if self.collectionView.numberOfItems(inSection: 0) == 12 {
-            closeButton.isEnabled = true
+        if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+            closeButton.isHidden = false
         } else {
-            closeButton.isEnabled = false
+            closeButton.isHidden = true
         }
         let indexPaths = indexes.map { IndexPath(item: $0, section: 0) }
         collectionView.reloadItems(at: indexPaths)
@@ -310,10 +310,10 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
 
     open func reloadPreviews() {
         titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-        if self.collectionView.numberOfItems(inSection: 0) == 12 {
-            closeButton.isEnabled = true
+        if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+            closeButton.isHidden = false
         } else {
-            closeButton.isEnabled = false
+            closeButton.isHidden = true
         }
         collectionView.reloadData()
     }
@@ -366,10 +366,10 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
                     self.storage.deleteAsset(asset, completion: {})
                 }
                 titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-                if self.collectionView.numberOfItems(inSection: 0) == 12 {
-                    closeButton.isEnabled = true
+                if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+                    closeButton.isHidden = false
                 } else {
-                    closeButton.isEnabled = false
+                    closeButton.isHidden = true
                 }
             })
         }
@@ -498,10 +498,10 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             }, completion: { [self] _ in
                 self.scrollToLastAddedAssetAnimated(true)
                 titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-                if self.collectionView.numberOfItems(inSection: 0) == 12 {
-                    closeButton.isEnabled = true
+                if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+                    closeButton.isHidden = false
                 } else {
-                    closeButton.isEnabled = false
+                    closeButton.isHidden = true
                 }
             })
         }
