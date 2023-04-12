@@ -32,6 +32,8 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
         config.library.defaultMultipleSelection = true
         //config.wordings.
         config.screens = [.library]
+        config.library.preselectedItems = []
+        config.library.preSelectItemOnMultipleSelection = false
 
         // [Edit configuration here ...]
         // Build a picker with your configuration

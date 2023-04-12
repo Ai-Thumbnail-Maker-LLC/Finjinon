@@ -56,7 +56,7 @@ final class LowLightView: UIView {
             iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: spacing),
             iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
-            textLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: spacing),
+            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: spacing),
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -spacing),
             textLabel.topAnchor.constraint(equalTo: topAnchor, constant: spacing),
             textLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -spacing)

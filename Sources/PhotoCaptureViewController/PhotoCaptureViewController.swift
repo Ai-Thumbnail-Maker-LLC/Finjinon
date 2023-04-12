@@ -644,8 +644,8 @@ extension PhotoCaptureViewController: CaptureManagerDelegate {
         if lightingCondition == .low {
             lowLightView.text = "finjinon.lowLightMessage".localized()
             lowLightView.isHidden = false
-            lowLightView.iconImageView.isHidden = false
-            lowLightView.textLabel.textAlignment = .left
+            //lowLightView.iconImageView.isHidden = false
+            lowLightView.textLabel.textAlignment = .center
         } else {
             //self.updateText()
         }
