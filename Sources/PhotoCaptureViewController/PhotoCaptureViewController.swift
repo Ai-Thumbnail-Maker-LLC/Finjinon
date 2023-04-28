@@ -443,6 +443,33 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             delegate?.photoCaptureViewController(self, didFailWithError: error)
             return
         }
+        
+        if #available(iOS 14, *) {
+            if libraryAuthorizationStatus() == .limited {
+                
+                let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "Continue", style: .default) { action in
+                    self.dismiss(animated: true)
+                }
+                let updatePreferences = UIAlertAction(title: "Update Access", style: .default) { action in
+                    self.dismiss(animated: true)
+                    let settingsUrl = NSURL(string:UIApplication.openSettingsURLString)
+                            if let url = settingsUrl {
+                                DispatchQueue.main.async {
+                                    UIApplication.shared.open(url as URL, options: [:], completionHandler: nil) //(url as URL)
+                                }
+
+                            }
+                }
+                alert.addAction(action)
+                alert.addAction(updatePreferences)
+                self.present(alert, animated:true)
+                
+                return
+            }
+        } else {
+            // Fallback on earlier versions
+        }
 
         guard let controller = imagePickerAdapter?.viewControllerForImageSelection({ assets in
             if let waitView = self.imagePickerWaitingForImageDataView, assets.count > 0 {
