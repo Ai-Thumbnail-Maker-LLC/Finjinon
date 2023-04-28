@@ -444,7 +444,6 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             return
         }
         
-        if #available(iOS 14, *) {
             if libraryAuthorizationStatus() == .limited {
                 
                 let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
@@ -467,9 +466,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
                 
                 return
             }
-        } else {
-            // Fallback on earlier versions
-        }
+        
 
         guard let controller = imagePickerAdapter?.viewControllerForImageSelection({ assets in
             if let waitView = self.imagePickerWaitingForImageDataView, assets.count > 0 {
