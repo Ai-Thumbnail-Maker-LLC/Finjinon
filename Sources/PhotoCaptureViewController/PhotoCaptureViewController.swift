@@ -52,6 +52,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     fileprivate var focusIndicatorView = UIView(frame: CGRect(x: 0, y: 0, width: 64, height: 64))
     fileprivate var flashButton = UIButton()
     fileprivate var pickerButton: UIButton?
+    fileprivate var cancelButton = UIButton()
     fileprivate var closeButton = UIButton()
     fileprivate let buttonMargin: CGFloat = 12
     fileprivate var orientation: UIDeviceOrientation = .portrait
@@ -207,6 +208,19 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         captureButton.isEnabled = false
         captureButton.accessibilityLabel = "finjinon.captureButton".localized()
 
+        
+        //closeButton.isHidden = true
+        cancelButton.titleLabel?.numberOfLines = 2
+        cancelButton.titleLabel?.textAlignment = .center
+        cancelButton.frame = CGRect(x: captureButton.frame.minX - (viewBounds.width - captureButton.frame.maxX), y: captureButton.frame.midY - 44, width: viewBounds.width - captureButton.frame.maxX, height: 84)
+        cancelButton.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
+        cancelButton.setTitle("finjinon.cancel".localized(), for: .normal)
+        cancelButton.tintColor = UIColor.white
+        cancelButton.isEnabled = true
+        cancelButton.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        containerView.addSubview(cancelButton)
+
+        
         //closeButton.isHidden = true
         closeButton.titleLabel?.numberOfLines = 2
         closeButton.titleLabel?.textAlignment = .center
@@ -528,6 +542,14 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         imagePickerAdapter = nil
 
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func cancelButtonTapped(_: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+        //delegate?.photoCaptureViewControllerDidFinish(self)
+        imagePickerAdapter = nil
+
+        //dismiss(animated: true, completion: nil)
     }
 
     @objc func focusTapGestureRecognized(_ gestureRecognizer: UITapGestureRecognizer) {

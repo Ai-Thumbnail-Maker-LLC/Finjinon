@@ -6,6 +6,7 @@
 
 "finjinon.cameraAccessDenied" = "Denne appen har ikke tilgang til ditt kamera. Du kan gi appen tilgang i enhetens personvernsinnstillinger";
 "finjinon.done" = "Ferdig";
+"finjinon.cancel" = "Cancel";
 "finjinon.photos" = "Bilder";
 "finjinon.on" = "På";
 "finjinon.off" = "Av";
