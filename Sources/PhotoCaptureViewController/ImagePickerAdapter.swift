@@ -150,6 +150,7 @@ extension ImagePickerControllerAdapter : YPImagePickerDelegate {
         
         
         let vc = UIApplication.shared.keyWindow?.rootViewController
+        
         let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
         let action = UIAlertAction(title: "Continue", style: .default) { action in
             vc!.dismiss(animated: true)
@@ -166,7 +167,15 @@ extension ImagePickerControllerAdapter : YPImagePickerDelegate {
         }
         alert.addAction(action)
         alert.addAction(updatePreferences)
-        vc!.present(alert, animated:true)
+        var rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        if let navigationController = rootViewController as? UINavigationController {
+            rootViewController = navigationController.viewControllers.first
+        }
+        if let tabBarController = rootViewController as? UITabBarController {
+            rootViewController = tabBarController.selectedViewController
+        }
+        //...
+        rootViewController?.present(alert, animated: true, completion: nil)
         
     }
     
