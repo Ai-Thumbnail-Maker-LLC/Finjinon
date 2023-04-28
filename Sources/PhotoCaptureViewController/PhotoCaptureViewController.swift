@@ -444,28 +444,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             return
         }
         
-            if libraryAuthorizationStatus() == .limited {
-                
-                let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
-                let action = UIAlertAction(title: "Continue", style: .default) { action in
-                    self.dismiss(animated: true)
-                }
-                let updatePreferences = UIAlertAction(title: "Update Access", style: .default) { action in
-                    self.dismiss(animated: true)
-                    let settingsUrl = NSURL(string:UIApplication.openSettingsURLString)
-                            if let url = settingsUrl {
-                                DispatchQueue.main.async {
-                                    UIApplication.shared.open(url as URL, options: [:], completionHandler: nil) //(url as URL)
-                                }
-
-                            }
-                }
-                alert.addAction(action)
-                alert.addAction(updatePreferences)
-                self.present(alert, animated:true)
-                
-                return
-            }
+           
         
 
         guard let controller = imagePickerAdapter?.viewControllerForImageSelection({ assets in
@@ -519,7 +498,32 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             return
         }
 
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true) { [self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                if libraryAuthorizationStatus() == .limited {
+                    
+                    let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Continue", style: .default) { action in
+                        self.dismiss(animated: true)
+                    }
+                    let updatePreferences = UIAlertAction(title: "Update Access", style: .default) { action in
+                        self.dismiss(animated: true)
+                        let settingsUrl = NSURL(string:UIApplication.openSettingsURLString)
+                        if let url = settingsUrl {
+                            DispatchQueue.main.async {
+                                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil) //(url as URL)
+                            }
+                            
+                        }
+                    }
+                    alert.addAction(action)
+                    alert.addAction(updatePreferences)
+                    controller.present(alert, animated:true)
+                }
+                return
+            }
+        }
+
     }
 
     @objc func capturePhotoTapped(_ sender: UIButton) {
