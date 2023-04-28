@@ -213,7 +213,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
         cancelButton.titleLabel?.numberOfLines = 2
         cancelButton.titleLabel?.textAlignment = .center
         cancelButton.frame = CGRect(x: captureButton.frame.minX - (viewBounds.width - captureButton.frame.maxX), y: captureButton.frame.midY - 44, width: viewBounds.width - captureButton.frame.maxX, height: 84)
-        cancelButton.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
         cancelButton.setTitle("finjinon.cancel".localized(), for: .normal)
         cancelButton.tintColor = UIColor.white
         cancelButton.isEnabled = true
