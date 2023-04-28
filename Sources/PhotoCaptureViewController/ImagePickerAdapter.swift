@@ -30,6 +30,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
         config.library.minNumberOfItems = 1
         config.showsPhotoFilters = false
         config.library.defaultMultipleSelection = true
+        
         //config.wordings.
         config.screens = [.library]
         config.library.preselectedItems = []
@@ -38,6 +39,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
         // [Edit configuration here ...]
         // Build a picker with your configuration
         let picker = YPImagePicker(configuration: config)
+        picker.delegate = self
         picker.didFinishPicking { [self, unowned picker] items, _ in
 //            if let photo = items.singlePhoto {
 //                print(photo.fromCamera) // Image source (camera or library)
@@ -106,4 +108,37 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
     open func imagePickerControllerDidCancel(_: UIImagePickerController) {
         completionHandler(true)
     }
+    
+}
+
+extension ImagePickerControllerAdapter : YPImagePickerDelegate {
+    
+    public func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
+        
+        let vc = UIApplication.shared.keyWindow?.rootViewController
+        let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Continue", style: .default) { action in
+            vc!.dismiss(animated: true)
+        }
+        let updatePreferences = UIAlertAction(title: "Update Access", style: .default) { action in
+            vc!.dismiss(animated: true)
+            let settingsUrl = NSURL(string:UIApplication.openSettingsURLString)
+                    if let url = settingsUrl {
+                        DispatchQueue.main.async {
+                            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil) //(url as URL)
+                        }
+
+                    }
+        }
+        alert.addAction(action)
+        alert.addAction(updatePreferences)
+        vc!.present(alert, animated:true)
+        
+    }
+    
+    public func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
+        return true
+    }
+    
+    
 }
