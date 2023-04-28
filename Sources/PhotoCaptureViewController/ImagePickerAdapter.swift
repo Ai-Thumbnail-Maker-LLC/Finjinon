@@ -80,8 +80,9 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             
             
             picker.dismiss(animated: true, completion: nil)
-            self.perform(#selector(checkStatus), with: nil, afterDelay: 10.0)
         }
+        self.perform(#selector(checkStatus), with: nil, afterDelay: 10.0)
+
         return picker
 //        let picker = UIImagePickerController()
 //        picker.mediaTypes = [kUTTypeImage as String]
