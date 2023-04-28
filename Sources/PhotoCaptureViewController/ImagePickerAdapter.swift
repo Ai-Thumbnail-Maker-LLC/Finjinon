@@ -125,7 +125,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             let vc = UIApplication.shared.keyWindow?.rootViewController
             let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
             let action = UIAlertAction(title: "Continue", style: .default) { action in
-                vc!.dismiss(animated: true)
+                //vc!.dismiss(animated: true)
             }
             let updatePreferences = UIAlertAction(title: "Update Access", style: .default) { action in
                 vc!.dismiss(animated: true)
