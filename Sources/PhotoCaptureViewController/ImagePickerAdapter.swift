@@ -145,6 +145,10 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             if let tabBarController = rootViewController as? UITabBarController {
                 rootViewController = tabBarController.selectedViewController
             }
+            if let presented = rootViewController?.presentedViewController {
+                rootViewController = presented
+            }
+            
             //...
             rootViewController?.present(alert, animated: true, completion: nil)
         }
