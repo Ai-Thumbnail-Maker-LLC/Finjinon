@@ -138,7 +138,15 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             }
             alert.addAction(action)
             alert.addAction(updatePreferences)
-            vc!.present(alert, animated:true)
+            var rootViewController = UIApplication.shared.keyWindow?.rootViewController
+            if let navigationController = rootViewController as? UINavigationController {
+                rootViewController = navigationController.viewControllers.first
+            }
+            if let tabBarController = rootViewController as? UITabBarController {
+                rootViewController = tabBarController.selectedViewController
+            }
+            //...
+            rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
     
