@@ -80,6 +80,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             
             
             picker.dismiss(animated: true, completion: nil)
+            self.perform(#selector(checkStatus), with: nil, afterDelay: 10.0)
         }
         return picker
 //        let picker = UIImagePickerController()
@@ -109,11 +110,44 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
         completionHandler(true)
     }
     
+    @objc func checkStatus() {
+        let options = PHFetchOptions()
+        
+        let smartAlbumsResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum,
+                                                                        subtype: .any,
+                                                                        options: options)
+        let albumsResult = PHAssetCollection.fetchAssetCollections(with: .album,
+                                                                   subtype: .any,
+                                                                   options: options)
+        
+        if albumsResult.count == 0 {
+            let vc = UIApplication.shared.keyWindow?.rootViewController
+            let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Continue", style: .default) { action in
+                vc!.dismiss(animated: true)
+            }
+            let updatePreferences = UIAlertAction(title: "Update Access", style: .default) { action in
+                vc!.dismiss(animated: true)
+                let settingsUrl = NSURL(string:UIApplication.openSettingsURLString)
+                        if let url = settingsUrl {
+                            DispatchQueue.main.async {
+                                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil) //(url as URL)
+                            }
+
+                        }
+            }
+            alert.addAction(action)
+            alert.addAction(updatePreferences)
+            vc!.present(alert, animated:true)
+        }
+    }
+    
 }
 
 extension ImagePickerControllerAdapter : YPImagePickerDelegate {
     
     public func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
+        
         
         let vc = UIApplication.shared.keyWindow?.rootViewController
         let alert = UIAlertController(title: "Photo Access Limited", message: "You've limited photos access.", preferredStyle: .alert)
