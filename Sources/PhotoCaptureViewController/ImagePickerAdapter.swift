@@ -20,6 +20,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
 
     var selectionHandler: ([PHAsset]) -> Void = { _ in }
     var completionHandler: (_ didCancel: Bool) -> Void = { _ in }
+    var hasCheckedStatus = false
 
     open func viewControllerForImageSelection(_ selectedAssetsHandler: @escaping ([PHAsset]) -> Void, completion: @escaping (Bool) -> Void) -> UIViewController {
         selectionHandler = selectedAssetsHandler
@@ -81,7 +82,10 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             
             picker.dismiss(animated: true, completion: nil)
         }
-        self.perform(#selector(checkStatus), with: nil, afterDelay: 10.0)
+        if hasCheckedStatus == false {
+            hasCheckedStatus = true
+            self.perform(#selector(checkStatus), with: nil, afterDelay: 10.0)
+        }
 
         return picker
 //        let picker = UIImagePickerController()
