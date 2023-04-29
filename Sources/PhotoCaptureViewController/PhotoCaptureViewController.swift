@@ -323,7 +323,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
 
     open func reloadPreviewItemsAtIndexes(_ indexes: [Int]) {
         titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-        if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+        if self.collectionView.numberOfItems(inSection: 0) >= 5 {
             closeButton.isHidden = false
         } else {
             closeButton.isHidden = true
@@ -334,7 +334,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
 
     open func reloadPreviews() {
         titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-        if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+        if self.collectionView.numberOfItems(inSection: 0) >= 5 {
             closeButton.isHidden = false
         } else {
             closeButton.isHidden = true
@@ -390,7 +390,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
                     self.storage.deleteAsset(asset, completion: {})
                 }
                 titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-                if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+                if self.collectionView.numberOfItems(inSection: 0) >= 5 {
                     closeButton.isHidden = false
                 } else {
                     closeButton.isHidden = true
@@ -550,7 +550,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             }, completion: { [self] _ in
                 self.scrollToLastAddedAssetAnimated(true)
                 titleLabel.text = "(\(self.collectionView.numberOfItems(inSection: 0))/12)"
-                if self.collectionView.numberOfItems(inSection: 0) >= 12 {
+                if self.collectionView.numberOfItems(inSection: 0) >= 5 {
                     closeButton.isHidden = false
                 } else {
                     closeButton.isHidden = true
