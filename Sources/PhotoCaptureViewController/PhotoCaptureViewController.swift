@@ -567,7 +567,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
 
     @objc func doneButtonTapped(_: UIButton) {
         delegate?.photoCaptureViewControllerDidFinish(self)
-        imagePickerAdapter = nil
+        //imagePickerAdapter = nil
 
         dismiss(animated: true, completion: nil)
     }
@@ -575,7 +575,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     @objc func cancelButtonTapped(_: UIButton) {
         self.navigationController?.popViewController(animated: true)
         //delegate?.photoCaptureViewControllerDidFinish(self)
-        imagePickerAdapter = nil
+        //imagePickerAdapter = nil
 
         //dismiss(animated: true, completion: nil)
     }
