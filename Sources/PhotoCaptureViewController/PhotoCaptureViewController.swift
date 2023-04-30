@@ -222,14 +222,18 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
 
         
         //closeButton.isHidden = true
+        
+        closeButton.layer.cornerRadius = 22.0
+        closeButton.backgroundColor = UIColor(red: 0.776, green: 0.600, blue: 1.000, alpha: 1.0)//UIColor(red: 1, green: 0.792, blue: 0.6, alpha: 1)
         closeButton.titleLabel?.numberOfLines = 2
         closeButton.titleLabel?.textAlignment = .center
-        closeButton.frame = CGRect(x: captureButton.frame.maxX, y: captureButton.frame.midY - 44, width: viewBounds.width - captureButton.frame.maxX, height: 84)
+        closeButton.frame = CGRect(x: captureButton.frame.maxX + (((viewBounds.width - captureButton.frame.maxX) * 0.75) * 0.175), y: (captureButton.frame.midY - 44) + 20, width: (viewBounds.width - captureButton.frame.maxX) * 0.75, height: 44)
         closeButton.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
         closeButton.setTitle("finjinon.done".localized(), for: .normal)
         closeButton.tintColor = UIColor.white
         closeButton.isEnabled = true
         closeButton.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
         containerView.addSubview(closeButton)
 
         lowLightView.text = "finjinon.twelveMessage".localized()

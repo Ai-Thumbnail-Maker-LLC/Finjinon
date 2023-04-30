@@ -5,7 +5,7 @@
 */
 
 "finjinon.cameraAccessDenied" = "Camera access denied, please enable it in the Settings app to continue";
-"finjinon.done" = "Done";
+"finjinon.done" = "Create Avatars →";
 "finjinon.cancel" = "Cancel";
 "finjinon.photos" = "Photos";
 "finjinon.on" = "On";
