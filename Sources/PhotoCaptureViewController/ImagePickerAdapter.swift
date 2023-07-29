@@ -27,7 +27,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
         selectionHandler = selectedAssetsHandler
         completionHandler = completion
         
-        if true {
+        if self.hasGoodAccess() == false {
             var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
             config.filter = .any(of: [.images, .livePhotos])
             config.selectionLimit = 1
@@ -214,6 +214,39 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             
             //...
             rootViewController?.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func hasGoodAccess() -> Bool {
+        
+        if PHPhotoLibrary.authorizationStatus() == .denied {
+            return false
+        } else if PHPhotoLibrary.authorizationStatus() == .notDetermined {
+            return true
+        } else if PHPhotoLibrary.authorizationStatus() == .restricted {
+            return false
+        } else if PHPhotoLibrary.authorizationStatus() == .authorized {
+            
+            let options = PHFetchOptions()
+            
+            
+            let albumsResult = PHAssetCollection.fetchAssetCollections(with: .album,
+                                                                       subtype: .any,
+                                                                       options: options)
+            
+            if albumsResult.count == 0 {
+                
+                return false
+            } else {
+                return true
+            }
+            
+        } else if PHPhotoLibrary.authorizationStatus() == .limited {
+            
+            return false
+            
+        } else {
+            return false
         }
     }
     
