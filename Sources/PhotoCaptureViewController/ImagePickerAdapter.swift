@@ -6,6 +6,7 @@ import UIKit
 import MobileCoreServices
 import Photos
 import YPImagePicker
+import PhotosUI
 
 public protocol ImagePickerAdapter {
     // Return a UIViewController suitable for picking one or more images. The supplied selectionHandler may be called more than once.
@@ -13,22 +14,25 @@ public protocol ImagePickerAdapter {
     // The completion handler will be called when done, supplying the caller with a didCancel flag which will be true
     // if the user cancelled the image selection process.
     // NOTE: The caller is responsible for dismissing any presented view controllers in the completion handler.
-    func viewControllerForImageSelection(_ selectedAssetsHandler: @escaping ([PHAsset]) -> Void, completion: @escaping (Bool) -> Void) -> UIViewController
+    func viewControllerForImageSelection(_ selectedAssetsHandler: @escaping ([Any]) -> Void, completion: @escaping (Bool) -> Void) -> UIViewController
 }
 
-open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
 
-    var selectionHandler: ([PHAsset]) -> Void = { _ in }
+    var selectionHandler: ([Any]) -> Void = { _ in }
     var completionHandler: (_ didCancel: Bool) -> Void = { _ in }
     var hasCheckedStatus = false
 
-    open func viewControllerForImageSelection(_ selectedAssetsHandler: @escaping ([PHAsset]) -> Void, completion: @escaping (Bool) -> Void) -> UIViewController {
+    open func viewControllerForImageSelection(_ selectedAssetsHandler: @escaping ([Any]) -> Void, completion: @escaping (Bool) -> Void) -> UIViewController {
         selectionHandler = selectedAssetsHandler
         completionHandler = completion
         
         if true {
-            let picker = UIImagePickerController()
-            picker.mediaTypes = [kUTTypeImage as String]
+            var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
+            config.filter = .any(of: [.images, .livePhotos])
+            config.selectionLimit = 1
+            let picker = PHPickerViewController(configuration: config)
+            //picker.mediaTypes = [kUTTypeImage as String]
             picker.delegate = self
 
             return picker
@@ -104,6 +108,17 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
     }
 
     open func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        
+//        var asset = info[UIImagePickerController.InfoKey.phAsset]
+//
+//        if asset != nil {
+//            let asset = PHAsset()
+//            let a = asset as! PHAsset
+//            selectionHandler([a])
+//            completionHandler(false)
+//            return
+//        }
+        
         guard let referenceURL = info[.referenceURL] as? URL else {
             completionHandler(true)
             return
@@ -117,6 +132,41 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
             NSLog("*** Failed to fetch PHAsset for asset library URL: \(referenceURL): \(String(describing: fetchResult.firstObject))")
             completionHandler(true)
         }
+    }
+    
+    open func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
+        if results.count == 0 {
+            return
+        }
+        
+        for result in results {
+              result.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { (object, error) in
+                 if let image = object as? UIImage {
+                    DispatchQueue.main.async {
+                       // Use UIImage
+                       print("Selected image: \(image)")
+                        self.selectionHandler([image])
+                        self.completionHandler(false)
+                    }
+                 }
+              })
+           }
+        
+        
+//        guard let referenceURL = info[.referenceURL] as? URL else {
+//            completionHandler(true)
+//            return
+//        }
+//
+//        let fetchResult = PHAsset.fetchAssets(withALAssetURLs: [referenceURL], options: nil)
+//        if let asset = fetchResult.firstObject {
+//            selectionHandler([asset])
+//            completionHandler(false)
+//        } else {
+//            NSLog("*** Failed to fetch PHAsset for asset library URL: \(referenceURL): \(String(describing: fetchResult.firstObject))")
+//            completionHandler(true)
+//        }
     }
 
     open func imagePickerControllerDidCancel(_: UIImagePickerController) {

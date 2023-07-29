@@ -481,18 +481,35 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
             let resolver = AssetResolver()
             var count = assets.count
             assets.forEach { asset in
-                resolver.enqueueResolve(asset, completion: { image in
+                
+                if (asset as AnyObject).isKind(of: PHAsset.self) {
+                    resolver.enqueueResolve(asset as! PHAsset, completion: { image in
+                        self.createAssetFromImage(image, completion: { (asset: Asset) in
+                            var mutableAsset = asset
+                            mutableAsset.imageDataSourceType = .library
+                            self.didAddAsset(mutableAsset)
+                            
+                            count -= 1
+                            if count == 0 {
+                                self.imagePickerWaitingForImageDataView?.removeFromSuperview()
+                            }
+                        })
+                    })
+                } else {
+                    let image = asset as! UIImage
+                    
                     self.createAssetFromImage(image, completion: { (asset: Asset) in
                         var mutableAsset = asset
                         mutableAsset.imageDataSourceType = .library
                         self.didAddAsset(mutableAsset)
-
+                        
                         count -= 1
                         if count == 0 {
                             self.imagePickerWaitingForImageDataView?.removeFromSuperview()
                         }
                     })
-                })
+                    
+                }
             }
         }, completion: { _ in
             DispatchQueue.main.async {
