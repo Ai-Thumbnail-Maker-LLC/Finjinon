@@ -25,6 +25,14 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
     open func viewControllerForImageSelection(_ selectedAssetsHandler: @escaping ([PHAsset]) -> Void, completion: @escaping (Bool) -> Void) -> UIViewController {
         selectionHandler = selectedAssetsHandler
         completionHandler = completion
+        
+        if true {
+            let picker = UIImagePickerController()
+            picker.mediaTypes = [kUTTypeImage as String]
+            picker.delegate = self
+
+            return picker
+        }
 
         var config = YPImagePickerConfiguration()
         config.library.maxNumberOfItems = 20
