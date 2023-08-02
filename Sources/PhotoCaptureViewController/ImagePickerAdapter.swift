@@ -218,9 +218,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
     }
     
     @objc func hasGoodAccess() -> Bool {
-        
-        return true
-        
+                
         if PHPhotoLibrary.authorizationStatus() == .denied {
             return false
         } else if PHPhotoLibrary.authorizationStatus() == .notDetermined {
