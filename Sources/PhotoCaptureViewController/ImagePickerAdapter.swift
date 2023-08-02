@@ -30,7 +30,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
         if self.hasGoodAccess() == false {
             var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
             config.filter = .any(of: [.images, .livePhotos])
-            config.selectionLimit = 1
+            config.selectionLimit = 20
             let picker = PHPickerViewController(configuration: config)
             //picker.mediaTypes = [kUTTypeImage as String]
             picker.delegate = self
@@ -218,7 +218,9 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
     }
     
     @objc func hasGoodAccess() -> Bool {
-                
+        
+        return false
+        
         if PHPhotoLibrary.authorizationStatus() == .denied {
             return false
         } else if PHPhotoLibrary.authorizationStatus() == .notDetermined {
