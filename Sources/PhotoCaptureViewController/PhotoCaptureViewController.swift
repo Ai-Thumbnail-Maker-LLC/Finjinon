@@ -404,6 +404,7 @@ open class PhotoCaptureViewController: UIViewController, PhotoCollectionViewLayo
     }
 
     open func libraryAuthorizationStatus() -> PHAuthorizationStatus {
+        return .authorized
         return PHPhotoLibrary.authorizationStatus()
     }
 

@@ -134,9 +134,11 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
         }
     }
     
+    
     open func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
         if results.count == 0 {
+            picker.presentingViewController?.dismiss(animated: true)
             return
         }
         
@@ -170,6 +172,7 @@ open class ImagePickerControllerAdapter: NSObject, ImagePickerAdapter, UIImagePi
     }
 
     open func imagePickerControllerDidCancel(_: UIImagePickerController) {
+        
         completionHandler(true)
     }
     
